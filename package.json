@@ -55,6 +55,7 @@
     }
   },
   "sapux": [
-    "app/products"
+    "app/products",
+    "app/customergroup"
   ]
 }
