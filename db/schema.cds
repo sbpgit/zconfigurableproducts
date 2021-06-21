@@ -96,5 +96,11 @@ entity ZPRODUCT {
         PRODHIERARCHY6 :String(18);
         CONFIGMATERIAL : String(40);
 };
+entity ZBOOKS {
+    key PRODUCTID : String(40) @title : 'Material';  
+        PRODDESC   : String(40) @title: 'Material Description';              
+        PRODFAMILY :   String(30);
+        PRODGROUP  :  String(30);
+};
     
 
