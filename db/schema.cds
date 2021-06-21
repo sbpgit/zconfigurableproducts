@@ -5,44 +5,7 @@ using {
   cuid,
   sap.common
 } from '@sap/cds/common';
-/*
-type Url : String;
 
-type TechnicalBooleanFlag : Boolean @(
-    UI.Hidden,
-    Core.Computed
-);
-
-type TechnicalFieldControlFlag : Integer @(
-    UI.Hidden,
-    Core.Computed
-);
-
-type Criticality : Integer @(
-    UI.Hidden,
-    Core.Computed
-);
-
-type Identifier : String(100)@(title : 'Identifier');
-@cds.autoexpose
-abstract entity identified : cuid {
-    identifier : Identifier not null;
-}
-
-//Bolded display of first table column values can be achieved by defining annotations Common.SemanticKey and
-//Common.TextArrangment for the entities key and referring to a 'human-readable' identifier to be displayed instead.
-
-annotate identified with @(
-    Common.SemanticKey : [identifier],
-    UI.Identification  : [{Value : identifier}]
-) {
-
-    ID         @Common : {
-        Text            : identifier,
-        TextArrangement : #TextOnly
-        
-    };
-}*/
 
 entity ZLOCATION {
     key LOCID : String(4) @title: 'Location ';
