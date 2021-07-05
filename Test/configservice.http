@@ -1,0 +1,2 @@
+GET 
+http://localhost:4004/v2/configproductservice/ET_PRODUCTS

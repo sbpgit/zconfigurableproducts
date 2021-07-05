@@ -1,4 +1,5 @@
 using ZConfigurableProducts.db from '../db/schema'  ;
+
 service configproductservice {
 @odata.draft.enabled
  entity ET_LOCATIONS
@@ -22,6 +23,12 @@ entity ET_CHARACTERISTICS
     as projection on db.ZCHARACTERISTICS;
 entity ET_CHARACTER_VAL
     as projection on db.ZCHARACTER_VALUES;
+
+entity ET_CLASSCHARVAL
+    as projection on db.ZCLASSCHARVAL;
+
+entity ET_BOMCONFIG
+    as projection on db.ZBOMCONFIG;
 entity ET_OBJECTDEPEND
     as projection on db.ZOBJECTDEPENDENCY;
 entity ET_PRODPLAN

@@ -86,7 +86,7 @@ entity ZPRODUCT: managed{
     }
 }); */
 entity ZPRODUCTCOND {
-    key PRODUCTID : Association to ZPRODUCT;
+    key PRODUCTID : String(40)    @title : 'Product';  
     key PLANT:        String(4) @title : 'Plant';
     key BOMCOMPONENT: String(40) @title : 'BOM Component';
     key OBJECT_DEPENDENCY: String(30) @title:'Object Dependency';
@@ -114,7 +114,7 @@ entity ZCLASSES:managed{
 	
 //Characteristitcs	
 entity ZCHARACTERISTICS: managed{
-    key INTRNO_CLASS: Association to ZCLASSES;
+    key INTRNO_CLASS: String(18);
 	key INTRNO_CHAR : String(10);
 	CHAR_NAME: String(30);
 	CHAR_DESC: String(30);
@@ -125,11 +125,35 @@ entity ZCHARACTERISTICS: managed{
     }
 // Characteristic Values	
 entity ZCHARACTER_VALUES: managed{
-    key INTRNO_CHAR:Association to ZCHARACTERISTICS;
+    key INTRNO_CHAR: String(10); //Association to ZCHARACTERISTICS;
 	key INTRNO_CHARVAL: String(10);
 	CHAR_VALUE    : String(70);
 	CHARVAL_DESC  : String(30);
 	CATCH_ALL     : String(1); 
+}
+
+entity ZCLASSCHARVAL{
+    key INTRNO_CLASS: String(18);
+	key INTRNO_CHAR : String(10);
+	key INTRNO_CHARVAL: String(10);
+	CLASS_NAME: String(20);
+	CHAR_NAME: String(30);
+	CHAR_VALUE    : String(70);
+	CHARVAL_DESC  : String(30);
+    AVGPERCENT : String(10,3);
+    AVGUSAGEPROB :  String(10,3);
+}
+entity ZBOMCONFIG{
+    key PRODUCTID :String(40);
+    key INTCOUNTER: String(10);
+    ITEMNO: String(5);
+    COMPONENT: String(40);
+    COMP_QTY : Decimal(13,3);
+    RULE : String(150);
+    VALID_FROM : Date;
+    VALID_TO : Date;
+    INTRCOM1 : String(50);
+    INTRCOM2 : String(50);
 }
 //Object dependency
 entity ZOBJECTDEPENDENCY{
@@ -162,8 +186,8 @@ entity ZPROD_RESTRICT_ASSIGN{
 }
 //Product BOM
 entity ZPROD_BOM{
-    key LOCID: Association to ZLOCATION;
-    key PRODUCTID :Association to ZPRODUCT;
+    key LOCID: String(4) @title: 'Location ';//Association to ZLOCATION;//
+    key PRODUCTID : String(40);//Association to ZPRODUCT;
     key INTCOUNTER: String(10);
     ITEMNO: String(5);
     COMPONENT: String(40);
@@ -175,23 +199,23 @@ entity ZPROD_BOM{
 // Product BOM - Object Dependency
 entity ZPRODBOM_OD{    
     key LOCID: Association to ZLOCATION;
-    key PRODUCTID :Association to ZPRODUCT;
-    key INTRNO_OD: Association to ZOBJECTDEPENDENCY;
+    key PRODUCTID   : Association to ZPRODUCT;
+    key INTRNO_OD   : Association to ZOBJECTDEPENDENCY;
 }
 // New Product
-entity ZPRODUCT_NEW{
-    key LOCID: Association to ZLOCATION;
+entity ZPRODUCT_NEW: managed{
+    key LOCID         : String(4);
     key PRODUCTID_NEW : String(40);
-    key REF_PROD : String(40);
-    HISTR_VALID_FROM : Date;
-    HISTR_VALID_TO : Date;
+    key REF_PROD      : String(40);
+    HISTR_VALID_FROM  : Date;
+    HISTR_VALID_TO    : Date;
 }
 //Product Configuration
-entity ZPROD_CONFIGNEW{
-    key PRODUCTID_NEW : Association to ZPRODUCT_NEW;
-    key REF_PROD : Association to ZPRODUCT_NEW;
-    key CHAR_VALUENEW    : String(70);
-    REF_CHAR_VALUE   : String(70);
+entity ZPROD_CONFIGNEW: managed{
+    key PRODUCTID_NEW : String(40); 
+    key REF_PROD      : String(40); 
+    key CHAR_VALUENEW : String(70);
+    REF_CHAR_VALUE    : String(70);
 }
 //Product Variant Tables
 /*entity ZPROD_VAR{	

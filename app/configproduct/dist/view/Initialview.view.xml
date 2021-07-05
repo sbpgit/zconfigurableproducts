@@ -1,0 +1,23 @@
+<mvc:View
+    controllerName="com.prod.configproduct.controller.Initialview"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+>
+	<Page id="page" title="{i18n>title}">
+        <customHeader>
+			<Bar>
+				<contentLeft>
+			    <Button id="leftMenu" icon="sap-icon://menu2" tooltip="Side Menu Expand/Collapse" press="expandBegin" type="Transparent" visible="false"/>
+			    </contentLeft>
+				<contentMiddle>
+					<Title text="{i18n>detailsTitle}"></Title>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<f:FlexibleColumnLayout id="fcl"></f:FlexibleColumnLayout>
+		</content>
+	</Page>
+</mvc:View>
