@@ -37,6 +37,10 @@
             }
         }
     },
+    "sap.cloud": {
+        "public": true,
+        "service": "configdemo-service"
+    },
     "sap.ui": {
         "technology": "UI5",
         "icons": {
@@ -74,13 +78,13 @@
             "cozy": true
         },
         "models": {
-			"oGModel": {
-				"type": "sap.ui.model.json.JSONModel",
-				"settings": {
-					"defaultBindingMode": "TwoWay"
-				},
-				"preload": true
-			},
+            "oGModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {
+                    "defaultBindingMode": "TwoWay"
+                },
+                "preload": true
+            },
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {
@@ -89,13 +93,7 @@
             },
             "prod": {
                 "dataSource": "mainService",
-                "preload": true,
-                "settings": {
-                    "synchronizationMode": "None",
-                    "operationMode": "Server",
-                    "autoExpandSelect": true,
-                    "earlyRequests": true
-                }
+                "preload": true
             }
         },
         "resources": {
@@ -128,18 +126,18 @@
                 "Initialview": {
                     "viewType": "XML",
                     "viewName": "Initialview",
-					"viewLevel": 1
+                    "viewLevel": 1
                 },
                 "prodmaster": {
-					"viewType": "XML",
-					"viewName": "prodmaster",
-					"viewLevel": 2
-				},
-				"proddetail": {
-					"viewType": "XML",
-					"viewName": "proddetail",
-					"viewLevel": 3
-				}
+                    "viewType": "XML",
+                    "viewName": "prodmaster",
+                    "viewLevel": 2
+                },
+                "proddetail": {
+                    "viewType": "XML",
+                    "viewName": "proddetail",
+                    "viewLevel": 3
+                }
             }
         }
     }

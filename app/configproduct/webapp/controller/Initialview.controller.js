@@ -60,7 +60,7 @@ sap.ui.define([
                 this.getView().byId("fcl").mAggregations._midColumnForwardArrow.setVisible(false);
                 /* Menu button option for Device and Desktop*/
                 if (!Device.system.desktop) {
-                    this.byId("leftMenu").setVisible(true);
+                   // this.byId("leftMenu").setVisible(true);
                     this.getModel("appView").setProperty("/expanded", false);
                 } else {
                     oViewModel.setProperty("/sideMenuBurgerVisible", false);
@@ -178,7 +178,7 @@ sap.ui.define([
                 this.bus.publish("nav", "backToBegin");
                 /* Handling Ment button when we are in Item Master page  */
                 if (!Device.system.desktop) {
-                    this.byId("leftMenu").setVisible(false);
+                  //  this.byId("leftMenu").setVisible(false);
                     this.getModel("appView").setProperty("/expanded", true);
                 }
             }

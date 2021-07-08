@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="configproductservice" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="ET_BOMCONFIG" EntityType="configproductservice.ET_BOMCONFIG"/>
+        <EntitySet Name="ET_CHARACTERISTICS" EntityType="configproductservice.ET_CHARACTERISTICS"/>
+        <EntitySet Name="ET_CHARACTER_VAL" EntityType="configproductservice.ET_CHARACTER_VAL"/>
+        <EntitySet Name="ET_CLASS" EntityType="configproductservice.ET_CLASS"/>
+        <EntitySet Name="ET_CLASSCHARVAL" EntityType="configproductservice.ET_CLASSCHARVAL"/>
+        <EntitySet Name="ET_CUSTOMERGROUP" EntityType="configproductservice.ET_CUSTOMERGROUP">
+          <NavigationPropertyBinding Path="SiblingEntity" Target="ET_CUSTOMERGROUP"/>
+        </EntitySet>
+        <EntitySet Name="ET_LOCATIONS" EntityType="configproductservice.ET_LOCATIONS">
+          <NavigationPropertyBinding Path="SiblingEntity" Target="ET_LOCATIONS"/>
+        </EntitySet>
+        <EntitySet Name="ET_LOCPROD" EntityType="configproductservice.ET_LOCPROD">
+          <NavigationPropertyBinding Path="LOCID" Target="ET_LOCATIONS"/>
+          <NavigationPropertyBinding Path="PRODUCTID" Target="ET_PRODUCTS"/>
+        </EntitySet>
+        <EntitySet Name="ET_OBJECTDEPEND" EntityType="configproductservice.ET_OBJECTDEPEND"/>
+        <EntitySet Name="ET_PRODBOM" EntityType="configproductservice.ET_PRODBOM"/>
+        <EntitySet Name="ET_PRODCOND" EntityType="configproductservice.ET_PRODCOND"/>
+        <EntitySet Name="ET_PRODCONFIG_NEW" EntityType="configproductservice.ET_PRODCONFIG_NEW"/>
+        <EntitySet Name="ET_PRODNEW" EntityType="configproductservice.ET_PRODNEW"/>
+        <EntitySet Name="ET_PRODPLAN" EntityType="configproductservice.ET_PRODPLAN">
+          <NavigationPropertyBinding Path="LOCID" Target="ET_LOCATIONS"/>
+          <NavigationPropertyBinding Path="PRODUCTID" Target="ET_PRODUCTS"/>
+          <NavigationPropertyBinding Path="INTRNO_OD" Target="ET_OBJECTDEPEND"/>
+        </EntitySet>
+        <EntitySet Name="ET_PRODRESTR" EntityType="configproductservice.ET_PRODRESTR">
+          <NavigationPropertyBinding Path="LOCID" Target="ET_LOCATIONS"/>
+          <NavigationPropertyBinding Path="PRODUCTID" Target="ET_PRODUCTS"/>
+        </EntitySet>
+        <EntitySet Name="ET_PRODUCTS" EntityType="configproductservice.ET_PRODUCTS">
+          <NavigationPropertyBinding Path="SiblingEntity" Target="ET_PRODUCTS"/>
+        </EntitySet>
+        <EntitySet Name="ET_USERFUNC" EntityType="configproductservice.ET_USERFUNC"/>
+        <EntitySet Name="ET_USERROLES" EntityType="configproductservice.ET_USERROLES"/>
+        <EntitySet Name="ET_ZPRODBOM_OD" EntityType="configproductservice.ET_ZPRODBOM_OD">
+          <NavigationPropertyBinding Path="LOCID" Target="ET_LOCATIONS"/>
+          <NavigationPropertyBinding Path="PRODUCTID" Target="ET_PRODUCTS"/>
+          <NavigationPropertyBinding Path="INTRNO_OD" Target="ET_OBJECTDEPEND"/>
+        </EntitySet>
+      </EntityContainer>
+      <EntityType Name="DraftAdministrativeData">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="ET_BOMCONFIG">
+        <Key>
+          <PropertyRef Name="PRODUCTID"/>
+          <PropertyRef Name="INTCOUNTER"/>
+        </Key>
+        <Property Name="PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="INTCOUNTER" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="ITEMNO" Type="Edm.String" MaxLength="5"/>
+        <Property Name="COMPONENT" Type="Edm.String" MaxLength="40"/>
+        <Property Name="COMP_QTY" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="RULE" Type="Edm.String" MaxLength="150"/>
+        <Property Name="CLASS_NAME" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CHAR_NAME" Type="Edm.String" MaxLength="30"/>
+        <Property Name="CHAR_VALUE" Type="Edm.String" MaxLength="70"/>
+        <Property Name="CHARVAL_DESC" Type="Edm.String" MaxLength="30"/>
+        <Property Name="VALID_FROM" Type="Edm.Date"/>
+        <Property Name="VALID_TO" Type="Edm.Date"/>
+        <Property Name="INTRCOM1" Type="Edm.String" MaxLength="50"/>
+        <Property Name="INTRCOM2" Type="Edm.String" MaxLength="50"/>
+      </EntityType>
+      <EntityType Name="ET_CHARACTERISTICS">
+        <Key>
+          <PropertyRef Name="INTRNO_CLASS"/>
+          <PropertyRef Name="INTRNO_CHAR"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="INTRNO_CLASS" Type="Edm.String" MaxLength="18" Nullable="false"/>
+        <Property Name="INTRNO_CHAR" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="CHAR_NAME" Type="Edm.String" MaxLength="30"/>
+        <Property Name="CHAR_DESC" Type="Edm.String" MaxLength="30"/>
+        <Property Name="CHAR_GROUP" Type="Edm.String" MaxLength="10"/>
+        <Property Name="CHAR_TYPE" Type="Edm.String" MaxLength="4"/>
+        <Property Name="ENTRY_REQ" Type="Edm.String" MaxLength="1"/>
+        <Property Name="CHAR_CATGRY" Type="Edm.String" MaxLength="40"/>
+      </EntityType>
+      <EntityType Name="ET_CHARACTER_VAL">
+        <Key>
+          <PropertyRef Name="INTRNO_CHAR"/>
+          <PropertyRef Name="INTRNO_CHARVAL"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="INTRNO_CHAR" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="INTRNO_CHARVAL" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="CHAR_VALUE" Type="Edm.String" MaxLength="70"/>
+        <Property Name="CHARVAL_DESC" Type="Edm.String" MaxLength="30"/>
+        <Property Name="CATCH_ALL" Type="Edm.String" MaxLength="1"/>
+      </EntityType>
+      <EntityType Name="ET_CLASS">
+        <Key>
+          <PropertyRef Name="INTRNO_CLASS"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="INTRNO_CLASS" Type="Edm.String" MaxLength="18" Nullable="false"/>
+        <Property Name="CLASS_NAME" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CLASS_TYPE" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CLASS_DESC" Type="Edm.String" MaxLength="50"/>
+        <Property Name="AUTHGROUP" Type="Edm.String" MaxLength="4"/>
+      </EntityType>
+      <EntityType Name="ET_CLASSCHARVAL">
+        <Key>
+          <PropertyRef Name="INTRNO_CLASS"/>
+          <PropertyRef Name="INTRNO_CHAR"/>
+          <PropertyRef Name="INTRNO_CHARVAL"/>
+        </Key>
+        <Property Name="INTRNO_CLASS" Type="Edm.String" MaxLength="18" Nullable="false"/>
+        <Property Name="INTRNO_CHAR" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="INTRNO_CHARVAL" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="CLASS_NAME" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CHAR_NAME" Type="Edm.String" MaxLength="30"/>
+        <Property Name="CHAR_VALUE" Type="Edm.String" MaxLength="70"/>
+        <Property Name="CHARVAL_DESC" Type="Edm.String" MaxLength="30"/>
+        <Property Name="AVGPERCENT" Type="Edm.Decimal" Scale="3" Precision="10"/>
+        <Property Name="AVGUSAGEPROB" Type="Edm.Decimal" Scale="3" Precision="10"/>
+      </EntityType>
+      <EntityType Name="ET_CUSTOMERGROUP">
+        <Key>
+          <PropertyRef Name="CUSTGROUP"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="CUSTGROUP" Type="Edm.String" MaxLength="2" Nullable="false"/>
+        <Property Name="CUSTDESC" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD1" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD2" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD3" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD4" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD5" Type="Edm.String" MaxLength="20"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="configproductservice.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="configproductservice.ET_CUSTOMERGROUP"/>
+      </EntityType>
+      <EntityType Name="ET_LOCATIONS">
+        <Key>
+          <PropertyRef Name="LOCID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="LOCID" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="LOCDESC" Type="Edm.String" MaxLength="30"/>
+        <Property Name="LOCTYPE" Type="Edm.String" MaxLength="1"/>
+        <Property Name="LATITUDE" Type="Edm.Decimal" Scale="8" Precision="10"/>
+        <Property Name="LONGITUTE" Type="Edm.Decimal" Scale="8" Precision="10"/>
+        <Property Name="RESERVE_FIELD1" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD2" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD3" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD4" Type="Edm.String" MaxLength="20"/>
+        <Property Name="RESERVE_FIELD5" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CHANGED_DATE" Type="Edm.Date"/>
+        <Property Name="CHANGED_TIME" Type="Edm.TimeOfDay"/>
+        <Property Name="CREATED_BY" Type="Edm.String" MaxLength="12"/>
+        <Property Name="CREATED_DATE" Type="Edm.Date"/>
+        <Property Name="CREATED_TIME" Type="Edm.TimeOfDay"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="configproductservice.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="configproductservice.ET_LOCATIONS"/>
+      </EntityType>
+      <EntityType Name="ET_LOCPROD">
+        <Key>
+          <PropertyRef Name="LOCID_LOCID"/>
+          <PropertyRef Name="PRODUCTID_PRODUCTID"/>
+        </Key>
+        <NavigationProperty Name="LOCID" Type="configproductservice.ET_LOCATIONS">
+          <ReferentialConstraint Property="LOCID_LOCID" ReferencedProperty="LOCID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="PRODUCTID" Type="configproductservice.ET_PRODUCTS">
+          <ReferentialConstraint Property="PRODUCTID_PRODUCTID" ReferencedProperty="PRODUCTID"/>
+        </NavigationProperty>
+        <Property Name="LOTSIZE" Type="Edm.String" MaxLength="2"/>
+        <Property Name="PROCUREMENT_TYPE" Type="Edm.String" MaxLength="1"/>
+        <Property Name="PLANNING_STRATEGY" Type="Edm.String" MaxLength="2"/>
+        <Property Name="LOCID_LOCID" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="PRODUCTID_PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="ET_OBJECTDEPEND">
+        <Key>
+          <PropertyRef Name="INTRNO_OD"/>
+        </Key>
+        <Property Name="INTRNO_OD" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="OD_NAME" Type="Edm.String" MaxLength="30"/>
+        <Property Name="OD_TYPE" Type="Edm.String" MaxLength="4"/>
+        <Property Name="OD_DESC" Type="Edm.String" MaxLength="30"/>
+        <Property Name="AUTHGROUP" Type="Edm.String" MaxLength="3"/>
+        <Property Name="OD_CONDITIONBLOB" Type="Edm.Binary"/>
+        <Property Name="OD_DEPENDTYPE" Type="Edm.String" MaxLength="1"/>
+      </EntityType>
+      <EntityType Name="ET_PRODBOM">
+        <Key>
+          <PropertyRef Name="LOCID"/>
+          <PropertyRef Name="PRODUCTID"/>
+          <PropertyRef Name="INTCOUNTER"/>
+        </Key>
+        <Property Name="LOCID" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="INTCOUNTER" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="ITEMNO" Type="Edm.String" MaxLength="5"/>
+        <Property Name="COMPONENT" Type="Edm.String" MaxLength="40"/>
+        <Property Name="COMP_QTY" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="VALID_FROM" Type="Edm.Date"/>
+        <Property Name="VALID_TO" Type="Edm.Date"/>
+      </EntityType>
+      <EntityType Name="ET_PRODCOND">
+        <Key>
+          <PropertyRef Name="PRODUCTID"/>
+          <PropertyRef Name="PLANT"/>
+          <PropertyRef Name="BOMCOMPONENT"/>
+          <PropertyRef Name="OBJECT_DEPENDENCY"/>
+          <PropertyRef Name="CONSEQ"/>
+          <PropertyRef Name="CHAR_PROPERTY"/>
+          <PropertyRef Name="CHAR_VALUE"/>
+        </Key>
+        <Property Name="PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="PLANT" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="BOMCOMPONENT" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="OBJECT_DEPENDENCY" Type="Edm.String" MaxLength="30" Nullable="false"/>
+        <Property Name="CONSEQ" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="CHAR_PROPERTY" Type="Edm.String" MaxLength="50" Nullable="false"/>
+        <Property Name="CHAR_VALUE" Type="Edm.String" MaxLength="50" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="ET_PRODCONFIG_NEW">
+        <Key>
+          <PropertyRef Name="PRODUCTID_NEW"/>
+          <PropertyRef Name="REF_PROD"/>
+          <PropertyRef Name="CHAR_VALUENEW"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="PRODUCTID_NEW" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="REF_PROD" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="CHAR_VALUENEW" Type="Edm.String" MaxLength="70" Nullable="false"/>
+        <Property Name="REF_CHAR_VALUE" Type="Edm.String" MaxLength="70"/>
+      </EntityType>
+      <EntityType Name="ET_PRODNEW">
+        <Key>
+          <PropertyRef Name="LOCID"/>
+          <PropertyRef Name="PRODUCTID_NEW"/>
+          <PropertyRef Name="REF_PROD"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="LOCID" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="PRODUCTID_NEW" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="REF_PROD" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="HISTR_VALID_FROM" Type="Edm.Date"/>
+        <Property Name="HISTR_VALID_TO" Type="Edm.Date"/>
+      </EntityType>
+      <EntityType Name="ET_PRODPLAN">
+        <Key>
+          <PropertyRef Name="LOCID_LOCID"/>
+          <PropertyRef Name="PRODUCTID_PRODUCTID"/>
+          <PropertyRef Name="INTRNO_OD_INTRNO_OD"/>
+        </Key>
+        <NavigationProperty Name="LOCID" Type="configproductservice.ET_LOCATIONS">
+          <ReferentialConstraint Property="LOCID_LOCID" ReferencedProperty="LOCID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="PRODUCTID" Type="configproductservice.ET_PRODUCTS">
+          <ReferentialConstraint Property="PRODUCTID_PRODUCTID" ReferencedProperty="PRODUCTID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="INTRNO_OD" Type="configproductservice.ET_OBJECTDEPEND">
+          <ReferentialConstraint Property="INTRNO_OD_INTRNO_OD" ReferencedProperty="INTRNO_OD"/>
+        </NavigationProperty>
+        <Property Name="LOCID_LOCID" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="PRODUCTID_PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="INTRNO_OD_INTRNO_OD" Type="Edm.String" MaxLength="10" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="ET_PRODRESTR">
+        <Key>
+          <PropertyRef Name="LOCID_LOCID"/>
+          <PropertyRef Name="PRODUCTID_PRODUCTID"/>
+        </Key>
+        <NavigationProperty Name="LOCID" Type="configproductservice.ET_LOCATIONS">
+          <ReferentialConstraint Property="LOCID_LOCID" ReferencedProperty="LOCID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="PRODUCTID" Type="configproductservice.ET_PRODUCTS">
+          <ReferentialConstraint Property="PRODUCTID_PRODUCTID" ReferencedProperty="PRODUCTID"/>
+        </NavigationProperty>
+        <Property Name="LOCID_LOCID" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="PRODUCTID_PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="ET_PRODUCTS">
+        <Key>
+          <PropertyRef Name="PRODUCTID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="PRODDESC" Type="Edm.String" MaxLength="40"/>
+        <Property Name="PRODFAMILY" Type="Edm.String" MaxLength="30"/>
+        <Property Name="PRODGROUP" Type="Edm.String" MaxLength="30"/>
+        <Property Name="PRODMODEL" Type="Edm.String" MaxLength="30"/>
+        <Property Name="PRODMRANGE" Type="Edm.String" MaxLength="30"/>
+        <Property Name="PRODSERIES" Type="Edm.String" MaxLength="30"/>
+        <Property Name="MATERIALTYPE" Type="Edm.String" MaxLength="4"/>
+        <Property Name="UOM" Type="Edm.String" MaxLength="3"/>
+        <Property Name="LOCID" Type="Edm.String" MaxLength="4"/>
+        <Property Name="AUTHGROUP" Type="Edm.String" MaxLength="4"/>
+        <Property Name="PLMSTATUS" Type="Edm.String" MaxLength="10"/>
+        <Property Name="CONFIGURABLE" Type="Edm.String" MaxLength="1"/>
+        <Property Name="PRODHIERARCHY1" Type="Edm.String" MaxLength="18"/>
+        <Property Name="PRODHIERARCHY2" Type="Edm.String" MaxLength="18"/>
+        <Property Name="PRODHIERARCHY3" Type="Edm.String" MaxLength="18"/>
+        <Property Name="PRODHIERARCHY4" Type="Edm.String" MaxLength="18"/>
+        <Property Name="PRODHIERARCHY5" Type="Edm.String" MaxLength="18"/>
+        <Property Name="PRODHIERARCHY6" Type="Edm.String" MaxLength="18"/>
+        <Property Name="CONFIGMATERIAL" Type="Edm.String" MaxLength="40"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="configproductservice.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="configproductservice.ET_PRODUCTS"/>
+      </EntityType>
+      <EntityType Name="ET_USERFUNC">
+        <Key>
+          <PropertyRef Name="AUTHGROUP"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="AUTHGROUP" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="AUTH_DESC" Type="Edm.String" MaxLength="40"/>
+      </EntityType>
+      <EntityType Name="ET_USERROLES">
+        <Key>
+          <PropertyRef Name="USERROLE"/>
+        </Key>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="USERROLE" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="ROLE_DESC" Type="Edm.String" MaxLength="40"/>
+      </EntityType>
+      <EntityType Name="ET_ZPRODBOM_OD">
+        <Key>
+          <PropertyRef Name="LOCID_LOCID"/>
+          <PropertyRef Name="PRODUCTID_PRODUCTID"/>
+          <PropertyRef Name="INTRNO_OD_INTRNO_OD"/>
+        </Key>
+        <NavigationProperty Name="LOCID" Type="configproductservice.ET_LOCATIONS">
+          <ReferentialConstraint Property="LOCID_LOCID" ReferencedProperty="LOCID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="PRODUCTID" Type="configproductservice.ET_PRODUCTS">
+          <ReferentialConstraint Property="PRODUCTID_PRODUCTID" ReferencedProperty="PRODUCTID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="INTRNO_OD" Type="configproductservice.ET_OBJECTDEPEND">
+          <ReferentialConstraint Property="INTRNO_OD_INTRNO_OD" ReferencedProperty="INTRNO_OD"/>
+        </NavigationProperty>
+        <Property Name="LOCID_LOCID" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <Property Name="PRODUCTID_PRODUCTID" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <Property Name="INTRNO_OD_INTRNO_OD" Type="Edm.String" MaxLength="10" Nullable="false"/>
+      </EntityType>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_CUSTOMERGROUP"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="configproductservice.ET_CUSTOMERGROUP"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_LOCATIONS"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="configproductservice.ET_LOCATIONS"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_PRODUCTS"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="configproductservice.ET_PRODUCTS"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_CUSTOMERGROUP"/>
+        <ReturnType Type="configproductservice.ET_CUSTOMERGROUP"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_LOCATIONS"/>
+        <ReturnType Type="configproductservice.ET_LOCATIONS"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_PRODUCTS"/>
+        <ReturnType Type="configproductservice.ET_PRODUCTS"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_CUSTOMERGROUP"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="configproductservice.ET_CUSTOMERGROUP"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_LOCATIONS"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="configproductservice.ET_LOCATIONS"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="configproductservice.ET_PRODUCTS"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="configproductservice.ET_PRODUCTS"/>
+      </Action>
+      <Annotations Target="configproductservice.ET_CHARACTERISTICS/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CHARACTERISTICS/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CHARACTERISTICS/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CHARACTERISTICS/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CHARACTER_VAL/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CHARACTER_VAL/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CHARACTER_VAL/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CHARACTER_VAL/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CLASS/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CLASS/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CLASS/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CLASS/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.EntityContainer/ET_CUSTOMERGROUP">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="configproductservice.draftActivate"/>
+            <PropertyValue Property="EditAction" String="configproductservice.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="configproductservice.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/CUSTGROUP">
+        <Annotation Term="Common.Label" String="Customer Group"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/CUSTDESC">
+        <Annotation Term="Common.Label" String="Customer Description"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_CUSTOMERGROUP/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.EntityContainer/ET_LOCATIONS">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="configproductservice.draftActivate"/>
+            <PropertyValue Property="EditAction" String="configproductservice.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="configproductservice.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_LOCATIONS/LOCID">
+        <Annotation Term="Common.Label" String="Location "/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_LOCATIONS/LOCDESC">
+        <Annotation Term="Common.Label" String="Location Descritpion"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_LOCATIONS/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_LOCATIONS/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_LOCATIONS/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODBOM/LOCID">
+        <Annotation Term="Common.Label" String="Location "/>
+      </Annotations>
+      <Annotations Target="configproductservice.EntityContainer/ET_PRODCOND">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCOND/PRODUCTID">
+        <Annotation Term="Common.Label" String="Product"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCOND/PLANT">
+        <Annotation Term="Common.Label" String="Plant"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCOND/BOMCOMPONENT">
+        <Annotation Term="Common.Label" String="BOM Component"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCOND/OBJECT_DEPENDENCY">
+        <Annotation Term="Common.Label" String="Object Dependency"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCOND/CONSEQ">
+        <Annotation Term="Common.Label" String="Condition Sequence"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCOND/CHAR_PROPERTY">
+        <Annotation Term="Common.Label" String="Characteristic"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCOND/CHAR_VALUE">
+        <Annotation Term="Common.Label" String="Characteristic Value"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCONFIG_NEW/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCONFIG_NEW/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCONFIG_NEW/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODCONFIG_NEW/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODNEW/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODNEW/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODNEW/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODNEW/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.EntityContainer/ET_PRODUCTS">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="configproductservice.draftActivate"/>
+            <PropertyValue Property="EditAction" String="configproductservice.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="configproductservice.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/PRODUCTID">
+        <Annotation Term="Common.Label" String="Product"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/PRODDESC">
+        <Annotation Term="Common.Label" String="Product Description"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/PRODFAMILY">
+        <Annotation Term="Common.Label" String="Product Family"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/PRODGROUP">
+        <Annotation Term="Common.Label" String="Product Group"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/PRODMODEL">
+        <Annotation Term="Common.Label" String="Product Model"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/PRODMRANGE">
+        <Annotation Term="Common.Label" String="Product Range"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/PRODSERIES">
+        <Annotation Term="Common.Label" String="Product Series"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/MATERIALTYPE">
+        <Annotation Term="Common.Label" String="Product Type"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/UOM">
+        <Annotation Term="Common.Label" String="Unit of Measure"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/LOCID">
+        <Annotation Term="Common.Label" String="Location "/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_PRODUCTS/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERFUNC/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERFUNC/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERFUNC/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERFUNC/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERROLES/modifiedAt">
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERROLES/createdAt">
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERROLES/createdBy">
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="configproductservice.ET_USERROLES/modifiedBy">
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

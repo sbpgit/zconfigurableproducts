@@ -124,6 +124,8 @@ sap.ui.define([
                         // Calling the item page when Application loaded				
                         oGModel.setProperty("/PRODUCTID", oData.results[0].PRODUCTID);
                         oGModel.setProperty("/PRODDESC", oData.results[0].PRODDESC);
+                        oGModel.setProperty("/PRODFAMILY", oData.results[0].PRODFAMILY);
+                        oGModel.setProperty("/LOCID", oData.results[0].LOCID);
                         // Setting firstProduct as selected 
                         that.getView().byId("idList").setSelectedItem(that.getView().byId("idList").getItems()[0], true);
                         that.handlePress();

@@ -12,7 +12,7 @@ sap.ui.define([
 	 */
     function (BaseController, JSONModel, MessageToast, MessageBox, Filter, FilterOperator, Device) {
         "use strict";
-        var that, oGModel;
+        var that, oGModel,prod;
 
         return BaseController.extend("com.prod.configproduct.controller.prodmaster", {
             onInit: function () {
@@ -114,7 +114,7 @@ sap.ui.define([
             getData: function () {
                 that = this;
                 // this.oList.setModel(that.oListModel);
-                var oModel = this.getModel("prod");
+                prod = this.getModel("prod");
                 this.getModel("prod").read("/ET_PRODUCTS", {
                     success: function (oData) {
                         that.oListModel.setData({
@@ -124,6 +124,8 @@ sap.ui.define([
                         // Calling the item page when Application loaded				
                         oGModel.setProperty("/PRODUCTID", oData.results[0].PRODUCTID);
                         oGModel.setProperty("/PRODDESC", oData.results[0].PRODDESC);
+                        oGModel.setProperty("/PRODFAMILY", oData.results[0].PRODFAMILY);
+                        oGModel.setProperty("/LOCID", oData.results[0].LOCID);
                         // Setting firstProduct as selected 
                         that.getView().byId("idList").setSelectedItem(that.getView().byId("idList").getItems()[0], true);
                         that.handlePress();
@@ -132,7 +134,7 @@ sap.ui.define([
                         MessageToast.show(that.i18n.getText("getListErr"));
                     }
                 });
-                this.oList.setModel(oModel);
+                this.oList.setModel(prod);
                 this.oList.bindItems({
                     path: "/ET_PRODUCTS",
                     template: new sap.m.StandardListItem({

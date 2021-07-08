@@ -1,12 +1,13 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" 
     xmlns="sap.m" 
 	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
-	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:smartTable="sap.ui.comp.smarttable"    
+	xmlns:smartField="sap.ui.comp.smartfield"
     controllerName="com.prod.configproduct.controller.proddetail">
 	<Page>
 		<customHeader>
 			<Toolbar>
-				<Title id="detailTitle" text="Product Details" class="sapUiSmallMarginBegin"></Title>
+				<Title id="detailTitle" text="Product Configurations" class="sapUiSmallMarginBegin"></Title>
 			</Toolbar>
 		</customHeader>
 		<content>
@@ -16,9 +17,9 @@
 		title="Product:{oGModel>PRODUCTID}"
         number="{oGModel>MATERIALTYPE}"
 		class="sapUiResponsivePadding--header" >
-		<ObjectAttribute text="{oGModel>PRODDESC}" />
-		<ObjectAttribute text="{oGModel>PRODFAMILY}" />
-		<ObjectAttribute text="{oGModel>PRODSERIES}" />
+		<ObjectAttribute text="Description: {oGModel>PRODDESC}" />
+		<ObjectAttribute text="Family: {oGModel>PRODFAMILY}" />
+		<ObjectAttribute text="Plant: {oGModel>LOCID}" />
    
 	</ObjectHeader>
     <IconTabBar
@@ -29,7 +30,7 @@
         <IconTabFilter
                 text="Config"
                 key="config">
-                <Table>
+                <Table id="tabConfig" items="{path: 'prod>/ET_CLASSCHARVAL', sorter: { path: 'PROD>CLASS_NAME' }}">
                 <columns>
                     <Column>
                         <Text text="Class"/>
@@ -44,18 +45,28 @@
                         <Text text="Average %"/>
                     </Column>
                 </columns>
+                <items>
+						<ColumnListItem >
+							<cells>
+								<Text text="{prod>CLASS_NAME}"/>
+								<Text text="{prod>CHAR_NAME}"/>
+								<Text text="{prod>CHAR_VALUE}"/>
+								<Text text="{prod>AVGPERCENT}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
                 </Table>
             </IconTabFilter>
              <IconTabFilter
                 text="BOM"
                 key="bom">
-                <Table>
+                <Table id="tabBOM" items="{path: 'prod>/ET_BOMCONFIG', sorter: { path: 'PROD>COMPONENT' }}">
                 <columns>
                     <Column>
-                        <Text text="Product"/>
+                        <Text text="Component"/>
                     </Column>
                     <Column>
-                        <Text text="Component"/>
+                        <Text text="Component Descrption"/>
                     </Column>
                     <Column>
                         <Text text="Quantity"/>
@@ -70,18 +81,31 @@
                         <Text text="Valid To"/>
                     </Column>
                 </columns>
+                
+                <items>
+						<ColumnListItem >
+							<cells>
+								<Text text="{prod>COMPONENT}"/>
+								<Text text="{prod>INTRCOM2}"/>
+								<Text text="{prod>COMP_QTY}"/>
+								<Text text="{prod>RULE}"/>
+								<Text text="{path: 'prod>VALID_FROM', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy', UTC: true}}"/>
+								<Text text="{path: 'prod>VALID_TO', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy', UTC: true}}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
                 </Table>
             </IconTabFilter>
             <IconTabFilter
                 text="Planning Result"
                 key="pres">
-                <Table>
+                <Table id="tabPlan" items="{path: 'prod>/ET_BOMCONFIG', sorter: { path: 'PROD>COMPONENT' }}">
                 <columns>
                     <Column>
-                        <Text text="Product"/>
+                        <Text text="Component"/>
                     </Column>
                     <Column>
-                        <Text text="Component"/>
+                        <Text text="Component Description" width="20%"/>
                     </Column>
                     <Column>
                         <Text text="Quantity"/>
@@ -90,32 +114,46 @@
                         <Text text="Average Usage Probability"/>
                     </Column>
                 </columns>
+                <items>
+						<ColumnListItem >
+							<cells>
+								<Text text="{prod>COMPONENT}"/>
+								<Text text="{prod>INTRCOM2}"/>
+								<Text text="{prod>COMP_QTY}"/>
+								<Text text="{prod>INTRCOM1}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
                 </Table>
             </IconTabFilter>
             <IconTabFilter
+                text="Product Variant Structure"
+                key="pvs">
+            <Text text="In progress"/>
+        </IconTabFilter>
+         <!--   <IconTabFilter
             text="Test"
                 key="test"
             >
             <smartFilterBar:SmartFilterBar id="smartFilterBar" 
-                            persistencyKey="UniqueAndStablePersistencyKey" 
-                            enableAutoBinding="true"
-			                considerSelectionVariants="true" 
-                            entitySet="ET_PRODUCTS" 
-                            enableBasicSearch="true" 
-                            basicSearchFieldName="PRODUCTID" 
+                            persistencyKey="SmartFilterPKey"
+                            entityType="prod>/ET_PRODUCTS" 
                             showClearButton="true">
-			<!-- layout data used to make the table growing but the filter bar fixed -->
-			<smartFilterBar:layoutData>
-				<FlexItemData shrinkFactor="0"/>
-			</smartFilterBar:layoutData>
 		</smartFilterBar:SmartFilterBar>
-        <smartTable:SmartTable tableBindingPath="prod>/ET_PRODUCTS" entitySet="prod>/ET_PRODUCTS" id="smartTable" smartFilterId="smartFilterBar" tableType="ResponsiveTable" useExportToExcel="false"
-							beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Line Items" showRowCount="true"
-							persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" demandPopin="true" class="sapUiResponsiveContentPadding"
-							initiallyVisibleFields="PRODUCTID,PRODDESC"/>
-
-		
-            </IconTabFilter>
+        <smartTable:SmartTable
+                            id="smartTable" 
+                            smartFilterId="smartFilterBar" 
+                            tableType="ResponsiveTable" 
+                            editable="false" 
+                            entitySet="prod>/ET_PRODUCTS" 
+                            useExportToExcel="false"
+                            useVariantManagement="true" 
+                            useTablePersonalisation="true" 
+                            header="Products" 
+                            showRowCount="true"
+							persistencyKey="SmartTableAnalytical_Explored" 
+                            enableAutoBinding="true"/>
+            </IconTabFilter>--> 
         </items>
     </IconTabBar>
 	</content>

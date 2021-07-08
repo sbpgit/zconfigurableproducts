@@ -1,1 +1,0 @@
-using configproductservice as service from '../../srv/configproductservice';

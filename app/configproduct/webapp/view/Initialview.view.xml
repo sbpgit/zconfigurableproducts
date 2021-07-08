@@ -5,17 +5,16 @@
     xmlns="sap.m"
     xmlns:f="sap.f"
 >
-	<Page id="page" title="{i18n>title}">
-        <customHeader>
-			<Bar>
-				<contentLeft>
-			    <Button id="leftMenu" icon="sap-icon://menu2" tooltip="Side Menu Expand/Collapse" press="expandBegin" type="Transparent" visible="false"/>
-			    </contentLeft>
-				<contentMiddle>
-					<Title text="{i18n>detailsTitle}"></Title>
-				</contentMiddle>
-			</Bar>
-		</customHeader>
+	<Page id="page">
+    <customHeader>
+        <OverflowToolbar class="sapUiMediumMarginTop">
+			   <!-- <Button id="leftMenu" icon="sap-icon://menu2" tooltip="Side Menu Expand/Collapse" press="expandBegin" type="Transparent" visible="false"/>
+			   -->	
+                    <ToolbarSpacer/>
+					<Title text="{i18n>detailsTitle}"></Title>	
+                    <ToolbarSpacer/>		
+			</OverflowToolbar>
+            </customHeader>
 		<content>
 			<f:FlexibleColumnLayout id="fcl"></f:FlexibleColumnLayout>
 		</content>

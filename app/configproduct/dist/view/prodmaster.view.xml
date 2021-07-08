@@ -9,7 +9,7 @@
 			<VBox class="sapUiTinyMarginBeginEnd">
 				<Input id="searchBar" liveChange="onSearch" placeholder="Product" width="100%"/>
 			</VBox>
-			<List id="idList" items='/results' growingScrollToLoad="true" growing="true"
+			<List id="idList" items="/results" growingScrollToLoad="true" growing="true"
 				mode="SingleSelectMaster" selectionChange="handlePress" rememberSelections="false" updateFinished="onUpdateFinished">
 				<items>
 					<StandardListItem title="{PRODUCTID}" description="{PRODDESC}" info="{PRODFAMILY}"

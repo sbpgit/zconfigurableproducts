@@ -47,6 +47,7 @@ entity ZPRODUCT: managed{
         PRODSERIES :  String(30)  @title : 'Product Series';
         MATERIALTYPE : String(4)  @title : 'Product Type';
         UOM : String(3)           @title : 'Unit of Measure';
+        LOCID : String(4) @title: 'Location ';
         AUTHGROUP : String(4);
         PLMSTATUS : String(10);
         CONFIGURABLE: String(1);
@@ -140,8 +141,8 @@ entity ZCLASSCHARVAL{
 	CHAR_NAME: String(30);
 	CHAR_VALUE    : String(70);
 	CHARVAL_DESC  : String(30);
-    AVGPERCENT : String(10,3);
-    AVGUSAGEPROB :  String(10,3);
+    AVGPERCENT : Decimal(10,3);
+    AVGUSAGEPROB :  Decimal(10,3);
 }
 entity ZBOMCONFIG{
     key PRODUCTID :String(40);
@@ -150,6 +151,10 @@ entity ZBOMCONFIG{
     COMPONENT: String(40);
     COMP_QTY : Decimal(13,3);
     RULE : String(150);
+	CLASS_NAME: String(20);
+	CHAR_NAME: String(30);
+	CHAR_VALUE    : String(70);
+	CHARVAL_DESC  : String(30);
     VALID_FROM : Date;
     VALID_TO : Date;
     INTRCOM1 : String(50);

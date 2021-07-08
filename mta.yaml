@@ -12,6 +12,7 @@ modules:
   - name: srv-api
     properties:
       srv-url: ${default-url}
+      
 - name: ZConfigurableProducts-db-deployer
   type: hdb
   path: gen/db
@@ -30,35 +31,9 @@ modules:
     build-result: resources
     requires:
     - artifacts:
-      - comloclocation.zip
-      name: comloclocation
-      target-path: resources/
-    - artifacts:
       - comprodconfigproduct.zip
       name: comprodconfigproduct
       target-path: resources/
-    - artifacts:
-      - configprodproductconfig.zip
-      name: configprodproductconfig
-      target-path: resources/
-    - artifacts:
-      - comconfigproductconfig.zip
-      name: comconfigproductconfig
-      target-path: resources/
-    - artifacts:
-      - appcomproject1.zip
-      name: appcomproject1
-      target-path: resources/
-- name: comloclocation
-  type: html5
-  path: app/location
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
 - name: comprodconfigproduct
   type: html5
   path: app/configproduct
@@ -69,36 +44,34 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
-- name: configprodproductconfig
-  type: html5
-  path: app/productconfig
+
+- name: ZConfigurableProducts-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: ZConfigurableProducts-repo-host
+    parameters:
+      service-key:
+        name: ZConfigurableProducts-repo-host-key
+  - name: uaa_ZConfigurableProducts
+    parameters:
+      service-key:
+        name: uaa_ZConfigurableProducts-key     
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: comprodconfigproduct_ZConfigurableProducts_repo_host
+          ServiceInstanceName: ZConfigurableProducts-html5-srv
+          ServiceKeyName: ZConfigurableProducts-repo-host-key
+          sap.cloud.service: capprod
+        - Authentication: OAuth2UserTokenExchange
+          Name: comprodconfigproduct_uaa_ZConfigurableProducts
+          ServiceInstanceName: ZConfigurableProducts-xsuaa-service
+          ServiceKeyName: uaa_ZConfigurableProducts-key
+          sap.cloud.service: capprod
+        existing_destinations_policy: ignore
   build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: comconfigproductconfig
-  type: html5
-  path: app/productconfig
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: appcomproject1
-  type: html5
-  path: app/project1
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
+    no-source: true
 resources:
 - name: ZConfigurableProducts-db
   type: com.sap.xs.hdi-container
@@ -125,12 +98,21 @@ resources:
             Name: ui5
             ProxyType: Internet
             Type: HTTP
-            URL: https://ui5.sap.com
+            URL: https://sbp-btp-sbpconsulting-dev-zconfigurableproducts-srv.cfapps.us10.hana.ondemand.com/
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
     service-name: ZConfigurableProducts-dest-srv
     service-plan: lite
+  requires:
+  - name: srv-api
+- name: uaa_ZConfigurableProducts
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ZConfigurableProducts-xsuaa-service
+    service-plan: application
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
